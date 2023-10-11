@@ -1,23 +1,26 @@
-import React from 'react'
-import { useForm} from "react-hook-form"
-import {usuarioAdd} from '../helpers/usuariosApi'
+import React from "react";
+import { useForm } from "react-hook-form";
+import { usuarioAdd } from "../helpers/usuariosApi";
 
 const RegistroUsuarioApp = () => {
-    const {register, handleSubmit,reset, formState:{errors}} = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-    const newUser = async (data) => {
-
-        console.log("enviaste el formulario")
-        console.log(register)
-
-        const objectUser = await usuarioAdd(data)
-        console.log(objectUser)
-
-        reset()
-    }
+  const newUser = async (data) => {
+    await usuarioAdd(data);
+    reset();
+  };
 
   return (
-    <form noValidate onSubmit={handleSubmit(newUser)} className="bg-light text-dark p-3 rounded w-100">
+    <form
+      noValidate
+      onSubmit={handleSubmit(newUser)}
+      className="bg-light text-dark p-3 rounded w-100"
+    >
       <h1 className="text-center">Registro de Usuario</h1>
       <section className="row">
         <fieldset className="col-12 ">
@@ -29,15 +32,15 @@ const RegistroUsuarioApp = () => {
             id="nameUser-input"
             className="form-control"
             {...register("name", {
-                required: "Este campo es requerido",
-                minLength: {
-                    value: 3,
-                    message: "Este campo tiene un mínimo de 3 caracteres"
-                },
-                maxLength: {
-                    value: 100,
-                    message: "Este campo tiene un máximo de 15 caracteres"
-                }
+              required: "Este campo es requerido",
+              minLength: {
+                value: 3,
+                message: "Este campo tiene un mínimo de 3 caracteres",
+              },
+              maxLength: {
+                value: 100,
+                message: "Este campo tiene un máximo de 15 caracteres",
+              },
             })}
             required
             minLength={3}
@@ -54,11 +57,9 @@ const RegistroUsuarioApp = () => {
             id="Email-input"
             className="form-control"
             {...register("email", {
-                required: "Este campo es requerido",
-                
+              required: "Este campo es requerido",
             })}
             required
-           
           />
           <p className="text-danger">{errors.email?.message}</p>
         </fieldset>
@@ -72,17 +73,17 @@ const RegistroUsuarioApp = () => {
             id="password-input"
             className="form-control"
             {...register("password", {
-                required: "Este campo es requerido",
-                pattern:{value: /^(?=.*[A-Za-z])(?=.*\d).{8,}$/i, message:"La Contraseña debe tener 8 caracteres mínimos y contener números y letras"}
+              required: "Este campo es requerido",
+              pattern: {
+                value: /^(?=.*[A-Za-z])(?=.*\d).{8,}$/i,
+                message:
+                  "La Contraseña debe tener 8 caracteres mínimos y contener números y letras",
+              },
             })}
             required
-           
           />
           <p className="text-danger">{errors.password?.message}</p>
         </fieldset>
-   
-        
-        
       </section>
       <div className="text-end">
         <button type="submit" className="btn btn-primary">
@@ -91,6 +92,6 @@ const RegistroUsuarioApp = () => {
       </div>
     </form>
   );
-}
+};
 
-export default RegistroUsuarioApp
+export default RegistroUsuarioApp;
