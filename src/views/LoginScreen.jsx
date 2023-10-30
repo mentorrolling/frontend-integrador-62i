@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { login } from "../helpers/authApi";
+import MessageAlertApp from "../components/MessageAlertApp";
 
 const LoginScreen = () => {
+  const [loading, setLoading] = useState(false);
+  const [loginUser, setLoginUser] = useState(null);
   const {
     register,
     handleSubmit,
@@ -11,15 +15,18 @@ const LoginScreen = () => {
   } = useForm();
 
   const inicioSesion = async (data) => {
+    setLoading(true);
     const respuesta = await login(data);
+    setLoginUser(respuesta);
     console.log(respuesta);
+    setLoading(false);
     reset();
   };
 
   return (
     <div className="container">
-      <div className="row">
-        <div className="col">
+      <div className="row vh-100 d-flex align-items-center">
+        <div className="col-12 col-md-6 offset-md-3">
           <div className="card">
             <div className="card-body">
               <form
@@ -41,6 +48,7 @@ const LoginScreen = () => {
                         required: "Este campo es requerido",
                       })}
                       required
+                      disabled={loading ? true : false}
                     />
                     <p className="text-danger">{errors.email?.message}</p>
                   </fieldset>
@@ -62,20 +70,32 @@ const LoginScreen = () => {
                         },
                       })}
                       required
+                      disabled={loading ? true : false}
                     />
                     <p className="text-danger">{errors.password?.message}</p>
                   </fieldset>
                 </section>
                 <div className="text-end">
-                  <button type="submit" className="btn btn-primary">
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={loading ? true : false}
+                  >
                     Iniciar
                   </button>
                 </div>
               </form>
             </div>
+            <div className="card-footer d-flex gap-2 ">
+              <p>Aún no estás registrado? </p>
+              <Link className="nav-link" to="/register">
+                clic aquí
+              </Link>
+            </div>
           </div>
         </div>
       </div>
+      {loginUser?.msg && <MessageAlertApp message={loginUser.msg} />}
     </div>
   );
 };
