@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { login } from "../helpers/authApi";
 
 const LoginScreen = () => {
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+  const [loginUser, setLoginUser] = useState(null);
   const {
     register,
     handleSubmit,
@@ -11,15 +16,23 @@ const LoginScreen = () => {
   } = useForm();
 
   const inicioSesion = async (data) => {
+    setLoading(true);
     const respuesta = await login(data);
     console.log(respuesta);
+    setLoginUser(respuesta);
     reset();
+    setLoading(false);
+
+    if (respuesta?.token) {
+      localStorage.setItem("token", JSON.stringify(respuesta.token));
+      navigate("/");
+    }
   };
 
   return (
     <div className="container">
-      <div className="row">
-        <div className="col">
+      <div className="row vh-100 d-flex align-items-center">
+        <div className="col-12 col-md-6 offset-md-3">
           <div className="card">
             <div className="card-body">
               <form
@@ -41,6 +54,7 @@ const LoginScreen = () => {
                         required: "Este campo es requerido",
                       })}
                       required
+                      disabled={loading ? true : false}
                     />
                     <p className="text-danger">{errors.email?.message}</p>
                   </fieldset>
@@ -56,18 +70,23 @@ const LoginScreen = () => {
                       {...register("password", {
                         required: "Este campo es requerido",
                         pattern: {
-                          value: /^.{8,}$/i,
+                          value: /^.{8,16}$/i,
                           message:
                             "La Contraseña debe tener 8 caracteres mínimos",
                         },
                       })}
                       required
+                      disabled={loading ? true : false}
                     />
                     <p className="text-danger">{errors.password?.message}</p>
                   </fieldset>
                 </section>
                 <div className="text-end">
-                  <button type="submit" className="btn btn-primary">
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={loading ? true : false}
+                  >
                     Iniciar
                   </button>
                 </div>
@@ -76,6 +95,26 @@ const LoginScreen = () => {
           </div>
         </div>
       </div>
+      {loginUser?.msg && (
+        <div className="row mt-3">
+          <div className="col">
+            <div className="alert alert-danger" role="alert">
+              {loginUser.msg}
+            </div>
+          </div>
+        </div>
+      )}
+      {loginUser?.errors && (
+        <div className="row mt-3">
+          {loginUser.errors.map((error, index) => (
+            <div className="col" key={index}>
+              <div className="alert alert-danger" role="alert">
+                {error.msg}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
