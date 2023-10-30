@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { login } from "../helpers/authApi";
 import MessageAlertApp from "../components/MessageAlertApp";
 
 const LoginScreen = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [loginUser, setLoginUser] = useState(null);
   const {
@@ -21,6 +22,10 @@ const LoginScreen = () => {
     console.log(respuesta);
     setLoading(false);
     reset();
+    if (respuesta?.token) {
+      localStorage.setItem("token", JSON.stringify(respuesta.token));
+      navigate("/");
+    }
   };
 
   return (
