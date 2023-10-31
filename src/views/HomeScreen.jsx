@@ -1,23 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { productosList } from "../helpers/productosApi";
 
+import useGetProducts from "../hooks/useGetProducts";
 import ProductosListApp from "../components/ProductosListApp";
 import SpinnerApp from "../components/SpinnerApp";
 
 const HomeScreen = () => {
-  const [datos, setDatos] = useState(null);
-
-  useEffect(() => {
-    traerProductos();
-  }, []);
-
-  const traerProductos = async () => {
-    const { total, productos } = await productosList();
-    setDatos({
-      total,
-      productos,
-    });
-  };
+  const { datos } = useGetProducts();
 
   return (
     <div className="container">

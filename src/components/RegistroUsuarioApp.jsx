@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { usuarioAdd } from "../helpers/usuariosApi";
+import { usuarioAdd } from "../api/usuariosApi";
 
 const RegistroUsuarioApp = () => {
   const {

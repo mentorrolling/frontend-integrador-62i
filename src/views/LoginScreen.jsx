@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { login } from "../helpers/authApi";
+import { login } from "../api/authApi";
 import MessageAlertApp from "../components/MessageAlertApp";
 
 const LoginScreen = () => {

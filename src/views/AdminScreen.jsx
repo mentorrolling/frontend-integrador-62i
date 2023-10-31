@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { obtenerDatosAuth } from "../helpers/authApi";
+import { obtenerDatosAuth } from "../api/authApi";
+import ProductosAdmin from "../components/ProductosAdmin";
 
 const AdminScreen = () => {
   const [role, setRole] = useState(null);
@@ -25,6 +26,8 @@ const AdminScreen = () => {
                 <h1>Administrador</h1>
               </div>
             </div>
+
+            <ProductosAdmin />
           </div>
         ) : (
           <Navigate to="/" />

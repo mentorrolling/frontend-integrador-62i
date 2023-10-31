@@ -1,8 +1,8 @@
 const url = "https://backend-62i.onrender.com/api/productos";
 const token = JSON.parse(localStorage.getItem("token"));
 
-const productosList = async () => {
-  const resp = await fetch(url, {
+const productosList = async (pagina) => {
+  const resp = await fetch(url + "?desde=" + pagina, {
     method: "GET",
 
     headers: {
@@ -52,7 +52,7 @@ const productosUpdate = async (id, datos) => {
 
 const productosDelete = async (id) => {
   const resp = await fetch(url + "/" + id, {
-    method: "PUT",
+    method: "DELETE",
     headers: {
       "Content-type": "application/json; charset=UTF-8",
       "x-token": token,
