@@ -91,7 +91,11 @@ const ProductosAdmin = () => {
         )}
       </div>
       <div className="col">
-        <BtnPaginationProd nextPage={nextPage} backPage={backPage} />
+        <BtnPaginationProd
+          pagina={pagina}
+          nextPage={nextPage}
+          backPage={backPage}
+        />
       </div>
     </>
   );

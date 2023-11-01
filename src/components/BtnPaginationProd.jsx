@@ -1,11 +1,15 @@
 import React from "react";
 
-const BtnPaginationProd = ({ nextPage, backPage }) => {
+const BtnPaginationProd = ({ pagina, nextPage, backPage }) => {
   return (
     <div className="container">
       <div className="row">
         <div className="col-12 d-flex gap-2">
-          <button className="btn btn-success" onClick={backPage}>
+          <button
+            className="btn btn-success"
+            onClick={backPage}
+            disabled={pagina == 0 ? true : false}
+          >
             <i className="fa fa-chevron-left" aria-hidden="true"></i>
           </button>
           <button className="btn btn-success" onClick={nextPage}>
