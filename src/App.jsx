@@ -19,7 +19,6 @@ function App() {
         />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegistroUsuarioApp />} />
-        <Route path="*" element={<ErrorScreen />} />
       </Routes>
     </BrowserRouter>
 

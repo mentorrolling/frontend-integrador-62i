@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { productsList } from "../helpers/productsApi";
+import { productsList } from "../api/productsApi";
+import "../css/cards.css";
 
 const HomeScreen = () => {
   const [datos, setDatos] = useState([]);
@@ -32,7 +33,7 @@ const HomeScreen = () => {
               <div className="card h-100">
                 <img
                   src={producto.img}
-                  className="card-img-top"
+                  className="card-img-top img-card"
                   alt={producto.nombre}
                 />
                 <div className="card-body">
