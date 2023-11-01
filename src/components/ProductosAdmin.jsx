@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 //custom hook
+import useGetProducts from "../hooks/useGetProducts";
 //importar funcion para borrar producto
+import { productDelete } from "../api/productsApi";
 //Importar componente modal para actualizar producto
 //Importar componente de paginación
+import BtnPaginationProd from "../components/BtnPaginationProd";
+import ModalProductUpdate from "./ModalProductUpdate";
 
 const ProductosAdmin = () => {
-  const [pagina, setPagina] = useState(0);
-
+  const [pagina, setPagina] = useState(0); //desde
   //cargar productos
-
+  const { datos } = useGetProducts(pagina);
   const [show, setShow] = useState(false); //Estado para manejo de Modal
   const [producto, setProducto] = useState(null); //datos del producto a actualizar
 
@@ -27,6 +30,14 @@ const ProductosAdmin = () => {
   //Función para modificar estado de producto
   const modificarProducto = (datos) => {
     setProducto(datos);
+  };
+
+  const borrarProducto = async (id) => {
+    const validar = confirm("Está seguro que quiere borrar el producto?");
+    if (validar) {
+      const respuesta = await productDelete(id);
+      console.log(respuesta);
+    }
   };
 
   //Funciones para manejo de paginación---------
@@ -51,10 +62,43 @@ const ProductosAdmin = () => {
 
           <tbody>
             {/* Cargar tabla con los datos y botones para borrar y actualizar  */}
+            {datos?.productos.length > 0 &&
+              datos.productos.map((producto) => (
+                <tr key={producto._id}>
+                  <td>{producto.nombre}</td>
+                  <td>{producto.categoria.nombre}</td>
+                  <td>{producto.precio}</td>
+                  <td>{producto.stock}</td>
+                  <td>
+                    <div>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => borrarProducto(producto._id)}
+                      >
+                        X
+                      </button>
+                      <button
+                        className="btn btn-warning btn-sm"
+                        onClick={() => handleShow(producto)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
 
         {/* Componente del Modal con sus respectivos Props  */}
+        {producto && (
+          <ModalProductUpdate
+            show={show}
+            handleClose={handleClose}
+            producto={producto}
+            setProducto={modificarProducto}
+          />
+        )}
       </div>
       <div className="col">
         {/* Componente de paginación con sus funciones  */}

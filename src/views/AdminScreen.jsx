@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 //importar función para obtener el dato del rol
+import { obtenerDatosAuth } from "../api/authApi";
 import ProductosAdmin from "../components/ProductosAdmin";
 
 const AdminScreen = () => {
   const [role, setRole] = useState(null);
-  const token = JSON.parse(localStorage.getItem("token"));
+  const token = JSON.parse(localStorage.getItem("token")) || null;
 
   useEffect(() => {
     queRolEs();
@@ -13,7 +14,15 @@ const AdminScreen = () => {
 
   const queRolEs = async () => {
     //obtengo el rol
+    const respuesta = await obtenerDatosAuth(token);
+    // const {role}=respuesta
+    //respuesta={
+    //   id,
+    //   role
+    // }
+    console.log(respuesta);
     //lo guardo en el estado
+    setRole(respuesta.role);
   };
 
   return (

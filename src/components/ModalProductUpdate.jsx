@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 //Importar funcion para actualizar producto
+import { productUpdate } from "../api/productsApi";
 //importar función para traer categorías
+import { categoryList } from "../api/categoriasApi";
 
 import Modal from "react-bootstrap/Modal"; //importación de React-Bootstrap
 
@@ -8,20 +10,33 @@ const ModalProductUpdate = ({ show, handleClose, producto, setProducto }) => {
   const [datosCategorias, setDatosCategorias] = useState(null);
 
   useEffect(() => {
-    //cargar las categorias
+    traerCategorias();
   }, []);
+
+  const traerCategorias = async () => {
+    const { categorias } = await categoryList();
+    setDatosCategorias(categorias);
+  };
 
   //cuando los datos de los inputs cambian
   const handleChange = (e) => {
     //y si es el checkbox??
-
-    setProducto({ ...producto, [e.target.name]: e.target.value });
+    if (e.target.name === "estado") {
+      setProducto({ ...producto, [e.target.name]: e.target.checked });
+    } else {
+      setProducto({ ...producto, [e.target.name]: e.target.value });
+    }
   };
 
   const actualizar = async (e) => {
     //prevenir el refresh de submit
+    e.preventDefault();
+
     //llamar funcion para actualizar
+    await productUpdate(producto._id, producto);
+
     //cerrar el modal
+    handleClose();
   };
 
   return (
@@ -75,7 +90,12 @@ const ModalProductUpdate = ({ show, handleClose, producto, setProducto }) => {
                 name="categoria"
               >
                 <option value="">Elegir Categoría</option>
-                {/* cargar las categorías en el select */}
+                {datosCategorias?.length > 0 &&
+                  datosCategorias.map((categoria) => (
+                    <option key={categoria._id} value={categoria._id}>
+                      {categoria.nombre}
+                    </option>
+                  ))}
               </select>
             </fieldset>
             <fieldset className="col-12 ">
