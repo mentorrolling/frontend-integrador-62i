@@ -22,6 +22,7 @@ const AdminScreen = () => {
     // }
     console.log(respuesta);
     //lo guardo en el estado
+
     setRole(respuesta.role);
   };
 

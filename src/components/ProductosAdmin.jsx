@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import useGetProducts from "../hooks/useGetProducts";
 //importar funcion para borrar producto
 import { productDelete } from "../api/productsApi";
-//Importar componente modal para actualizar producto
 //Importar componente de paginación
 import BtnPaginationProd from "../components/BtnPaginationProd";
+//Importar componente modal para actualizar producto
 import ModalProductUpdate from "./ModalProductUpdate";
 
 const ProductosAdmin = () => {
@@ -41,9 +41,20 @@ const ProductosAdmin = () => {
   };
 
   //Funciones para manejo de paginación---------
-  const nextPage = () => {};
+  const nextPage = () => {
+    //total de los productos = 8 / 2 página
+    const totalPages = datos.total / 5;
+    console.log(totalPages);
+    if (pagina + 1 < totalPages) {
+      setPagina(pagina + 5);
+    }
+  };
 
-  const backPage = () => {};
+  const backPage = () => {
+    if (pagina >= 5) {
+      setPagina(pagina - 5);
+    }
+  };
   //---------------------------------------------
 
   return (
@@ -102,6 +113,7 @@ const ProductosAdmin = () => {
       </div>
       <div className="col">
         {/* Componente de paginación con sus funciones  */}
+        <BtnPaginationProd nextPage={nextPage} backPage={backPage} />
       </div>
     </>
   );
