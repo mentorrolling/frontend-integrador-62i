@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 //importar función para obtener el dato del rol
 import { obtenerDatosAuth } from "../api/authApi";
 import ProductosAdmin from "../components/ProductosAdmin";
 
 const AdminScreen = () => {
   const [role, setRole] = useState(null);
+  const [mensaje, setMensaje] = useState(null);
   const token = JSON.parse(localStorage.getItem("token")) || null;
 
   useEffect(() => {
@@ -13,22 +14,30 @@ const AdminScreen = () => {
   }, []);
 
   const queRolEs = async () => {
-    //obtengo el rol
     const respuesta = await obtenerDatosAuth(token);
-    // const {role}=respuesta
-    //respuesta={
-    //   id,
-    //   role
-    // }
-    console.log(respuesta);
-    //lo guardo en el estado
 
-    setRole(respuesta.role);
+    if (respuesta?.msg) {
+      setMensaje(respuesta.msg);
+    } else {
+      setRole(respuesta.role);
+    }
+    // console.log(respuesta);
   };
 
   return (
     <>
-      {role ? (
+      {mensaje ? (
+        <div className="container">
+          <div className="row pt-5">
+            <div className="col">
+              <h3>{mensaje}</h3>
+              <Link className="nav-link" to="/login">
+                Iniciar Sesión
+              </Link>
+            </div>
+          </div>
+        </div>
+      ) : role ? (
         role === "ADMIN_ROLE" ? (
           <div className="container">
             <div className="row pt-5">
